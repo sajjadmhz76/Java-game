@@ -8,6 +8,7 @@ int team2_point = 0;
 int team1_win = 0;
 int team2_win = 0;
 
+String player_name = "";
 boolean last_point_team1 = false;
 boolean last_point_team2 = false;
 ArrayList<ground> myground = new ArrayList<>();
@@ -25,10 +26,9 @@ public static final String TYPE_PIK = ANSI_RESET + "pik";
 public static final String TYPE_GISHNIZ = ANSI_RESET + "gishniz";
 
 public myapp() {
-	generate_cards();
-	Collections.shuffle(card_list);
-	generate_players();
-	play_hokm();
+
+	start();
+
 }
 
 public String set_types(int index) {
@@ -70,12 +70,10 @@ public void generate_cards() {
 }
 
 public void generate_players() {
-	//System.out.println("Enter your name !");
-	//String myname = input.nextLine();
 	for (int i = 0; i < 4; i++) {
 		String playername = " ";
 		if(i == 0)
-			playername = "Sajjad";
+			playername = player_name;
 		else if(i == 1)
 			playername = "player1";
 		else if(i == 2)
@@ -92,18 +90,23 @@ public void generate_players() {
 
 
 public int set_hakem() {
+	try {
+		Thread.sleep(500);
+	} catch (InterruptedException e) {
+		throw new RuntimeException(e);
+	}
+	System.out.println("Lets set Hakem !");
 	Collections.shuffle(card_list);
 	int j = 0;
 	while (true) {
 		for (int i = 0; i < player_list.size(); i++) {
-			System.out.println(player_list.get(i).getName() + ANSI_RESET + " " + card_list.get(j).getName() + ANSI_RESET);
+			System.out.println(player_list.get(i).getName() + ANSI_RESET + " : " + card_list.get(j).getName() + ANSI_RESET);
 			try {
-				Thread.sleep(50);
+				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				throw new RuntimeException(e);
 			}
 			if(card_list.get(j).getValue() == 14) {
-
 				return i;
 			}
 			j++;
@@ -135,7 +138,7 @@ public String set_hokm(int index) {
 		for (card hakem_five_card : hakem_five_cards) {
 			System.out.println(hakem_five_card.getName());
 		}
-		System.out.println("You are Hakem");
+		System.out.println("You are Hakem !");
 		System.out.println("What is hokm?   1.del   2.gishniz   3.khesht   4.pik");
 		hokmint = getint();
 	} else {
@@ -162,7 +165,7 @@ public void show_cards_to_player() {
 }
 
 public void play_hokm() {
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < 7; i++) {
 		if(i == 0) {
 			hakem_index = set_hakem();
 		}
@@ -170,7 +173,7 @@ public void play_hokm() {
 		Distributing_cards();
 		hokm = set_hokm(hakem_index);
 		int starter = hakem_index;
-		while (higher_point < 3) {
+		while (higher_point < 7) {
 			System.out.println(" team 1: " + team1_point + " team 2:" + team2_point);
 			first_round(starter);
 			starter = next_turn_fixer(starter);
@@ -206,7 +209,7 @@ public void play_hokm() {
 		throw new RuntimeException(e);
 	}
 	System.out.println("Game over !");
-	System.out.println("Its " + "team 1 :" + team1_win+ "team 2 :" + team2_win);
+	System.out.println("team 1 : " + team1_win+ "\n team 2 :" + team2_win);
 
 
 	
@@ -385,6 +388,40 @@ public static int getint() {
 			input.next();
 		}
 	}
+}
+public void start(){
+	System.out.println("Enter your name :");
+	player_name = input.next();
+	generate_cards();
+	Collections.shuffle(card_list);
+	generate_players();
+	while (true){
+		System.out.println("Choose :   1.Play Hokm   2.Exit");
+		int ans=getint();
+		switch (ans){
+			case 1:
+				play_hokm();
+				break;
+//			case 2:
+//				caseB();
+//				break;
+//			case 3:
+//				caseC();
+//				break;
+		
+		}
+		if(ans==2)
+			break;
+	}
+}
+public void caseA(){
+	System.out.println("case A done !");
+}
+public void caseB(){
+	System.out.println("case B done !");
+}
+public void caseC(){
+	System.out.println("case C done !");
 }
 }
 
